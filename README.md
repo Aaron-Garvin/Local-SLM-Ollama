@@ -1,56 +1,46 @@
-# Project 2: Local SLM App with Ollama
+# 🦙 Local SLM Benchmark — Offline AI with Ollama
 
-This repository implements a fully offline local SLM benchmark using Ollama, FastAPI, and Instructor. It runs three local models on your machine, evaluates structured JSON extraction quality, and compares inference latency and success across models.
+> Run **3 AI models entirely on your machine** — no internet, no API keys, no cloud costs. Compare their speed and structured extraction quality side-by-side.
 
-## Project goals
+---
 
-- Run models entirely offline using Ollama
-- Compare inference speed and reliability for 3 models on the same hardware
-- Evaluate structured JSON extraction quality vs latency
-- Show practical tradeoffs for privacy, cost, and latency
+## 💡 What Does This Do?
 
-## What is included
+This project spins up a local REST API that routes text extraction requests to local language models via [Ollama](https://ollama.com). A built-in benchmark then stress-tests all three models with the same prompts and tells you which one wins on your hardware.
 
-- `main.py` — FastAPI server exposing `/extract` and `/health`
-- `benchmark.py` — benchmark runner for latency and JSON success
-- `schemas.py` — Pydantic schema for required extraction fields
-- `benchmark_prompts/prompts.json` — evaluation prompts for all models
-- `requirements.txt` — Python dependencies
-- `README.md` — project instructions and benchmark guidance
+**What you get:**
+- A running `/extract` API endpoint that returns structured JSON from plain text
+- A benchmark report comparing latency and extraction reliability across 3 models
+- A clear, data-driven answer to: *"Which model should I use for my machine?"*
 
-## Models in this benchmark
+---
 
-| Model       | Pull command            | Notes                                              |
-| ----------- | ----------------------- | -------------------------------------------------- |
-| `mistral`   | `ollama pull mistral`   | Highest quality/reliability, larger resource usage |
-| `llama3.2`  | `ollama pull llama3.2`  | Balanced speed and success rate                    |
-| `phi3:mini` | `ollama pull phi3:mini` | Lightweight, best for lower-memory systems         |
+## 🤖 The Three Models
 
-## Why this project is useful
+| Model | Pull Command | Best For |
+|---|---|---|
+| `mistral` | `ollama pull mistral` | Highest accuracy, worth the extra memory |
+| `llama3.2` | `ollama pull llama3.2` | Best balance of speed and reliability |
+| `phi3:mini` | `ollama pull phi3:mini` | Fastest; great for low-memory machines |
 
-- **Privacy:** all inference stays on your machine
-- **Latency:** you can measure how fast each model is locally
-- **Cost:** avoids cloud inference fees, trading cost for local compute
-- **Comparison:** same prompt set on the same hardware gives fair model comparison
+> All models run **100% offline** after the initial download. No data leaves your machine.
 
-## What to expect
+---
 
-- `mistral` should be the most accurate but may be slower
-- `llama3.2` should offer the best balance of speed and reliability
-- `phi3:mini` is likely the fastest with the smallest memory footprint, but may produce more parse failures
-- HTTP 422 responses indicate extraction validation failures, which are meaningful quality signals in this benchmark
+## ⚡ Quick Start (7 Steps)
 
-## How to run
+### Step 1 — Install Ollama
 
-### 1. Install Ollama
+**Windows:** Download and install from [ollama.com](https://ollama.com)
 
-- **Windows:** download and install from https://ollama.com
-- **Linux/macOS:**
-  ```bash
-  curl -fsSL https://ollama.com/install.sh | sh
-  ```
+**macOS / Linux:**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
 
-### 2. Download the models
+---
+
+### Step 2 — Download the Models
 
 ```bash
 ollama pull mistral
@@ -58,39 +48,45 @@ ollama pull llama3.2
 ollama pull phi3:mini
 ```
 
-### 3. Run Ollama
+> ⏱️ This is a one-time download. Each model is ~2–4 GB, so allow a few minutes depending on your connection.
+
+---
+
+### Step 3 — Start Ollama
 
 ```bash
 ollama serve
 ```
 
-Verify the server is available:
+Verify it's running:
 
 ```bash
 curl http://localhost:11434/api/tags
 ```
 
-### 4. Set up Python environment
+You should see a JSON list of your downloaded models.
+
+---
+
+### Step 4 — Set Up Python Environment
 
 ```bash
-cd "c:/Users/Admin/Desktop/Projec-2 Local SLM via Ollama"
+cd "your/project/folder"
 python -m venv venv
 ```
 
-Activate the venv:
+Activate the virtual environment:
 
-- PowerShell:
-  ```powershell
-  .\venv\Scripts\Activate.ps1
-  ```
-- CMD:
-  ```cmd
-  .\venv\Scripts\activate.bat
-  ```
-- Linux/macOS:
-  ```bash
-  source venv/bin/activate
-  ```
+```bash
+# macOS / Linux
+source venv/bin/activate
+
+# Windows (PowerShell)
+.\venv\Scripts\Activate.ps1
+
+# Windows (CMD)
+.\venv\Scripts\activate.bat
+```
 
 Install dependencies:
 
@@ -98,64 +94,143 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-### 5. Start the API server
+---
+
+### Step 5 — Start the API Server
 
 ```bash
 uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-### 6. Test the API
+Keep this terminal open — the server needs to stay running.
 
-Health check:
+---
 
+### Step 6 — Test the API
+
+**Health check** (confirm the server is up):
 ```bash
 curl http://127.0.0.1:8000/health
 ```
 
-Example extraction:
-
+**Try an extraction:**
 ```bash
 curl -X POST http://127.0.0.1:8000/extract \
   -H "Content-Type: application/json" \
-  -d '{"text":"Alice Smith, born in 1990, works at Microsoft in Seattle.","model":"mistral"}'
+  -d '{"text": "Alice Smith, born in 1990, works at Microsoft in Seattle.", "model": "mistral"}'
 ```
 
-### 7. Run the benchmark
+You should get back a structured JSON object with extracted fields. Try swapping `"mistral"` for `"llama3.2"` or `"phi3:mini"` to compare outputs.
 
-In a second terminal with the venv active:
+---
+
+### Step 7 — Run the Benchmark
+
+Open a **second terminal**, activate the venv, then run:
 
 ```bash
 python benchmark.py
 ```
 
-The benchmark writes results to `benchmark_results.json` and prints the performance summary.
+This runs every prompt in `benchmark_prompts/prompts.json` against all three models, then saves a full report to `benchmark_results.json` and prints a summary table.
 
-## Benchmark interpretation
+---
 
-- **Avg Latency** shows model speed on this hardware
-- **Median** removes outlier latency spikes
-- **JSON Success** measures how often structured extraction passed validation
-- **Higher success + lower latency** is better for production use
+## 📊 Reading Your Benchmark Results
 
-## Suggested documentation updates after benchmark
+After running `python benchmark.py`, you'll see a table like this:
 
-Replace the placeholder table below with your actual results after running `python benchmark.py`:
+| Model | Avg Latency | Median | JSON Success | Notes |
+|---|---|---|---|---|
+| `mistral` | `XX.XXs` | `XX.XXs` | `XX%` | Best quality; slower |
+| `llama3.2` | `XX.XXs` | `XX.XXs` | `XX%` | Best balance |
+| `phi3:mini` | `XX.XXs` | `XX.XXs` | `XX%` | Fastest; lower memory |
 
-| Model       | Avg Latency | Median   | JSON Success | Notes                 |
-| ----------- | ----------- | -------- | ------------ | --------------------- |
-| `mistral`   | `XX.XXs`    | `XX.XXs` | `XX%`        | best quality; slower  |
-| `llama3.2`  | `XX.XXs`    | `XX.XXs` | `XX%`        | best balance          |
-| `phi3:mini` | `XX.XXs`    | `XX.XXs` | `XX%`        | fastest, lower memory |
+**What each column means:**
 
-Then add your conclusion:
+- **Avg Latency** — mean response time per prompt; lower is faster
+- **Median** — middle value after sorting; less affected by occasional slow spikes
+- **JSON Success** — percentage of responses that passed schema validation; higher means more reliable structured output
+- **HTTP 422 responses** — these are *intentional* signals, not bugs — they mean a model returned output that failed validation
 
-- which model is best for quality
-- which model is best for latency
-- which model is best for lower-memory offline deployment
-- whether offline local inference is worth the privacy/cost tradeoff for your hardware
+**How to decide which model to use:**
 
-## Notes
+- Need the most accurate extractions? → pick the model with the highest JSON Success
+- Need the fastest responses? → pick the lowest Avg Latency
+- Running on a laptop or low-RAM machine? → `phi3:mini` is your best bet
 
-- This project is already structured as a local SLM benchmark.
-- You should keep the current code unless you encounter real runtime errors.
-- The main gap is documentation and benchmark result reporting, not the core offline comparison design.
+📝 **Fill in your actual results above** after running the benchmark, then add a short conclusion about which model won on your hardware.
+
+---
+
+## 🧪 End-to-End Test Checklist
+
+```
+[ ] curl http://localhost:11434/api/tags       → Lists your downloaded models
+[ ] curl http://127.0.0.1:8000/health         → Returns {"status": "ok"} or similar
+[ ] POST /extract with model=mistral          → Returns structured JSON
+[ ] POST /extract with model=llama3.2         → Returns structured JSON
+[ ] POST /extract with model=phi3:mini        → Returns structured JSON
+[ ] python benchmark.py                       → Produces benchmark_results.json
+```
+
+---
+
+## 📁 Project Structure
+
+```
+project/
+│
+├── main.py                        ← FastAPI server (/extract and /health endpoints)
+├── benchmark.py                   ← Runs all models, measures latency & success rate
+├── schemas.py                     ← Pydantic schema defining required extraction fields
+│
+├── benchmark_prompts/
+│   └── prompts.json               ← Test prompts used by the benchmark
+│
+├── benchmark_results.json         ← Output from benchmark.py (auto-generated)
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🛠️ Troubleshooting
+
+**`ollama: command not found`** — Ollama isn't installed or isn't in your PATH. Re-run the install command and open a fresh terminal.
+
+**`Connection refused` on port 11434** — Ollama isn't running. Run `ollama serve` first.
+
+**`Connection refused` on port 8000** — The FastAPI server isn't running. Start it with `uvicorn main:app --reload --host 127.0.0.1 --port 8000`.
+
+**HTTP 422 on `/extract`** — The model returned output that didn't match the schema. This is expected occasionally, especially with `phi3:mini`. It's a quality signal, not a crash.
+
+**Models downloading slowly** — This is normal; models are 2–4 GB each. Run the pulls before you need them.
+
+**Out of memory / system slowdown** — Switch to `phi3:mini`, which has the smallest footprint. Avoid running multiple `ollama pull` commands simultaneously.
+
+---
+
+## 🧱 Tech Stack
+
+| Component | Technology |
+|---|---|
+| Model Runtime | Ollama (local) |
+| API Framework | FastAPI |
+| Schema Validation | Pydantic + Instructor |
+| Models | Mistral, LLaMA 3.2, Phi-3 Mini |
+| Benchmark Output | JSON report + console summary |
+
+---
+
+## 💬 Why Run Models Locally?
+
+| Concern | Local (this project) | Cloud API |
+|---|---|---|
+| **Privacy** | ✅ Data never leaves your machine | ❌ Sent to third-party servers |
+| **Cost** | ✅ Free after hardware | ❌ Per-token billing |
+| **Latency** | Depends on your hardware | Depends on network + load |
+| **Setup** | Slightly more steps | Just an API key |
+| **Offline use** | ✅ Works with no internet | ❌ Requires connection |
+
+This project helps you measure whether local inference is fast enough for your specific use case — because the honest answer is: *it depends on your hardware.*
