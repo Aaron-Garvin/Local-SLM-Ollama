@@ -1,0 +1,182 @@
+[
+  {
+    "text": "Arjun Mehta, 27, is a software engineer in Mumbai.",
+    "expected": {
+      "name": "Arjun Mehta",
+      "age": 27,
+      "role": "software engineer",
+      "location": "Mumbai"
+    }
+  },
+  {
+    "text": "Dr. Kavitha Nair (45) heads the oncology dept at AIIMS Delhi.",
+    "expected": {
+      "name": "Kavitha Nair",
+      "age": 45,
+      "role": "oncology dept head",
+      "location": "Delhi"
+    }
+  },
+  {
+    "text": "Rohan studied CS at IIT Bombay and now works at a startup.",
+    "expected": {
+      "name": "Rohan",
+      "age": null,
+      "role": "startup",
+      "location": null
+    }
+  },
+  {
+    "text": "The CEO joined from Google after 12 years.",
+    "expected": {
+      "name": null,
+      "age": null,
+      "role": "CEO",
+      "location": null
+    }
+  },
+  {
+    "text": "Priya Sharma is a 29-year-old data scientist based in Bangalore.",
+    "expected": {
+      "name": "Priya Sharma",
+      "age": 29,
+      "role": "data scientist",
+      "location": "Bangalore"
+    }
+  },
+  {
+    "text": "A 35-year-old teacher named John Doe lives in Seattle.",
+    "expected": {
+      "name": "John Doe",
+      "age": 35,
+      "role": "teacher",
+      "location": "Seattle"
+    }
+  },
+  {
+    "text": "Maria Gomez, age 42, is a product manager working in Madrid.",
+    "expected": {
+      "name": "Maria Gomez",
+      "age": 42,
+      "role": "product manager",
+      "location": "Madrid"
+    }
+  },
+  {
+    "text": "Sarah Connor (30) works as an engineer.",
+    "expected": {
+      "name": "Sarah Connor",
+      "age": 30,
+      "role": "engineer",
+      "location": null
+    }
+  },
+  {
+    "text": "Michael is a chef who recently moved to Paris.",
+    "expected": {
+      "name": "Michael",
+      "age": null,
+      "role": "chef",
+      "location": "Paris"
+    }
+  },
+  {
+    "text": "David Kim, 50, works as a financial analyst in Seoul.",
+    "expected": {
+      "name": "David Kim",
+      "age": 50,
+      "role": "financial analyst",
+      "location": "Seoul"
+    }
+  },
+  {
+    "text": "Emma Watson, 33, works as an actress and activist based in London.",
+    "expected": {
+      "name": "Emma Watson",
+      "age": 33,
+      "role": "actress and activist",
+      "location": "London"
+    }
+  },
+  {
+    "text": "Yuki Tanaka, a 28-year-old UX designer based in Tokyo.",
+    "expected": {
+      "name": "Yuki Tanaka",
+      "age": 28,
+      "role": "UX designer",
+      "location": "Tokyo"
+    }
+  },
+  {
+    "text": "Carlos Santana, who is 65, is a musician living in San Francisco.",
+    "expected": {
+      "name": "Carlos Santana",
+      "age": 65,
+      "role": "musician",
+      "location": "San Francisco"
+    }
+  },
+  {
+    "text": "The local artist from Berlin, Germany, just finished their new exhibit.",
+    "expected": {
+      "name": null,
+      "age": null,
+      "role": "artist",
+      "location": "Berlin, Germany"
+    }
+  },
+  {
+    "text": "A marketing manager from Chicago, age 31, was promoted.",
+    "expected": {
+      "name": null,
+      "age": 31,
+      "role": "marketing manager",
+      "location": "Chicago"
+    }
+  },
+  {
+    "text": "Fatima, a 22-year-old student, studies at the University of Cairo.",
+    "expected": {
+      "name": "Fatima",
+      "age": 22,
+      "role": "student",
+      "location": "Cairo"
+    }
+  },
+  {
+    "text": "The plumber fixed the pipes in Boston.",
+    "expected": {
+      "name": null,
+      "age": null,
+      "role": "plumber",
+      "location": "Boston"
+    }
+  },
+  {
+    "text": "Dr. Alan Grant, 40, is a paleontologist.",
+    "expected": {
+      "name": "Alan Grant",
+      "age": 40,
+      "role": "paleontologist",
+      "location": null
+    }
+  },
+  {
+    "text": "Alice, a nurse in Sydney, works the night shift.",
+    "expected": {
+      "name": "Alice",
+      "age": null,
+      "role": "nurse",
+      "location": "Sydney"
+    }
+  },
+  {
+    "text": "Bob is a 45-year-old builder.",
+    "expected": {
+      "name": "Bob",
+      "age": 45,
+      "role": "builder",
+      "location": null
+    }
+  }
+]

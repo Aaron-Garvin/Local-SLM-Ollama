@@ -1,0 +1,5 @@
+TASK: Extract structured information from unstructured text.
+INPUT: A paragraph of text describing a person.
+OUTPUT: JSON with keys: name, age, role, location
+EXAMPLE INPUT: 'Priya Sharma is a 29-year-old data scientist based in Bangalore.'
+EXPECTED OUTPUT: {"name": "Priya Sharma", "age": 29, "role": "data scientist", "location": "Bangalore"}
